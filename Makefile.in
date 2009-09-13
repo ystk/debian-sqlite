@@ -38,7 +38,7 @@ RELEASE = @ALLOWRELEASE@
 
 # libtool compile/link/install
 LTCOMPILE = $(LIBTOOL) --mode=compile $(TCC)
-LTLINK = $(LIBTOOL) --mode=link $(TCC)
+LTLINK = $(LIBTOOL) --mode=link $(TCC) @TARGET_LIBS@
 LTINSTALL = $(LIBTOOL) --mode=install $(INSTALL)
 
 # Compiler options needed for programs that use the TCL library.
@@ -481,8 +481,11 @@ clean:
 	rm -f $(PUBLISH)
 	rm -f *.da *.bb *.bbg gmon.out
 	rm -f testfixture@TARGET_EXEEXT@ test.db
-	rm -rf doc
+	[ -f doc/lemon.html ] && mv doc/lemon.html . && mv doc/report1.txt .
+	rm -rf doc/*
+	[ -f lemon.html ] && mv lemon.html doc/ && mv report1.txt doc/
 	rm -f sqlite.dll sqlite.lib
+	rm -f last_change
 
 #
 # Windows section; all this funky .dll stuff ;-)

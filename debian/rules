@@ -1,0 +1,41 @@
+#!/usr/bin/make -f
+
+include /usr/share/cdbs/1/rules/buildcore.mk
+include /usr/share/cdbs/1/class/autotools.mk
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/rules/simple-patchsys.mk
+
+so_version := 0
+
+# Make sure libsqlite0 is built before packages depending on it
+binary/sqlite binary/libsqlite-dev binary/libsqlite-tcl:: binary/libsqlite$(so_version)
+
+common-install-arch::
+	install -d debian/tmp/usr/lib/sqlite
+	install -m 0664 debian/pkgIndex.tcl debian/tmp/usr/lib/sqlite
+	./libtool --mode=install install libtclsqlite.la `pwd`/debian/tmp/usr/lib/sqlite
+	install -d debian/tmp/usr/share/lemon
+	install -m 664 tool/lempar.c debian/tmp/usr/share/lemon
+	install -m 775 lemon debian/tmp/usr/bin
+
+DEB_AUTO_UPDATE_LIBTOOL = pre
+DEB_AUTO_UPDATE_AUTOCONF = 2.50
+DEB_AUTO_UPDATE_ACLOCAL = 1.9
+DEB_AUTO_UPDATE_AUTOMAKE = 1.9 # We don't use automake, but aclocal
+
+DEB_CONFIGURE_EXTRA_FLAGS = config_TARGET_TCL_INC="-I/usr/include/tcl8.4" \
+			    config_BUILD_CFLAGS="$(CFLAGS) -DTHREADSAFE=1" \
+			    config_TARGET_LIBS="-lpthread" \
+			    --enable-utf8
+
+DEB_BUILD_MAKE_TARGET = all libtclsqlite.la doc
+# DEB_MAKE_CHECK_TARGET = test
+
+DEB_DH_INSTALL_ARGS := --sourcedir=debian/tmp
+
+DEB_ALL_CHANGELOG = doc/changes.html
+
+DEB_DH_MAKESHLIBS_ARGS := -V -X"libtclsqlite.so*"
+
+DEB_SHLIBDEPS_LIBRARY_sqlite := libsqlite$(so_version)
+DEB_SHLIBDEPS_INCLUDE_sqlite := debian/libsqlite$(so_version)/usr/lib/

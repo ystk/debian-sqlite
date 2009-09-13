@@ -1,0 +1,8 @@
+Document: sqlite-reference
+Title: SQLite reference manual
+Abstract: Overview of SQLite
+Section: Data Management
+
+Format: HTML
+Index: /usr/share/doc/sqlite-doc/index.html
+Files: /usr/share/doc/sqlite-doc/*
