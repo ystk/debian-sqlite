@@ -2,8 +2,8 @@ Source: sqlite
 Section: devel
 Priority: optional
 Maintainer: Laszlo Boszormenyi (GCS) <gcs@debian.hu>
-Build-Depends: cdbs (>= 0.4.15), debhelper (>= 6), autoconf (>= 2.59), libtool (>= 1.5.2), automake1.9, autotools-dev, libreadline-dev, tcl8.4-dev
-Standards-Version: 3.8.3
+Build-Depends: cdbs (>= 0.4.15), debhelper (>= 6), autoconf (>= 2.59), libtool (>= 1.5.2), automake, autotools-dev, libreadline-dev, tcl8.5-dev
+Standards-Version: 3.9.2
 
 Package: sqlite
 Section: database

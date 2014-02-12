@@ -1,0 +1,11 @@
+--- sqlite-2.8.17.orig/src/shell.c
++++ sqlite-2.8.17/src/shell.c
+@@ -692,7 +692,7 @@
+   }else
+ 
+   if( c=='h' && strncmp(azArg[0], "help", n)==0 ){
+-    fprintf(stderr,zHelp);
++    fprintf(stderr,"%s\n",zHelp);
+   }else
+ 
+   if( c=='i' && strncmp(azArg[0], "indices", n)==0 && nArg>1 ){

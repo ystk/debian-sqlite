@@ -1,3 +1,21 @@
+sqlite (2.8.17-7) unstable; urgency=low
+
+  * Fix upstream mistake of missing format argument in fprintf
+    (closes: #646032).
+  * Empty dependency_list in libsqlite.la .
+  * Update packaging and its dependencies.
+
+ -- Laszlo Boszormenyi (GCS) <gcs@debian.hu>  Tue, 25 Oct 2011 00:55:38 +0200
+
+sqlite (2.8.17-6.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Fix FTBFS by replacing DEB_BUILD_MAKE_TARGET with 
+    DEB_MAKE_BUILD_TARGET. Thanks to Daniel Schepler for the patch
+    (closes: #618154).
+
+ -- Aurelien Jarno <aurel32@debian.org>  Tue, 02 Aug 2011 19:06:03 +0200
+
 sqlite (2.8.17-6) unstable; urgency=low
 
   * Change readline build dependency to plain libreadline-dev (version 6 ATM).
