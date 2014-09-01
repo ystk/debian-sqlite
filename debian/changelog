@@ -1,3 +1,40 @@
+sqlite (2.8.17-11) unstable; urgency=low
+
+  * Move to Tcl 8.6 .
+
+  [ Peter Michael Green <plugwash@debian.org> ]
+  * Add code in debian/rules to make build use appropriate tclsh
+    (closes: #746058).
+
+ -- Laszlo Boszormenyi (GCS) <gcs@debian.org>  Wed, 28 May 2014 12:14:25 +0000
+
+sqlite (2.8.17-10) unstable; urgency=low
+
+  * Update Standards-Version to 3.9.5 .
+
+  [ Wookey <wookey@debian.org> ] 
+  * Update config.{sub.guess} automatically (closes: #727510).
+
+ -- Laszlo Boszormenyi (GCS) <gcs@debian.org>  Mon, 06 Jan 2014 15:07:43 +0000
+
+sqlite (2.8.17-9) unstable; urgency=low
+
+  * Move to short debhelper rules and 3.0 (quilt) source format
+    (closes: #725539).
+  * Run tests but don't fail on them.
+
+ -- Laszlo Boszormenyi (GCS) <gcs@debian.org>  Fri, 18 Oct 2013 12:04:56 +0000
+
+sqlite (2.8.17-8) unstable; urgency=low
+
+  * Refresh auto* files and move to automake 1.13 (closes: #710341, #713180).
+  * Add missing headers.
+  * Fix pkgIndex.tcl for proper import.
+  * Update to Standards-Version 3.9.4 .
+  * Move to debhelper level 8 .
+
+ -- Laszlo Boszormenyi (GCS) <gcs@debian.org>  Tue, 09 Jul 2013 18:06:30 +0200
+
 sqlite (2.8.17-7) unstable; urgency=low
 
   * Fix upstream mistake of missing format argument in fprintf

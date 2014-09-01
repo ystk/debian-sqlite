@@ -1,42 +1,56 @@
 #!/usr/bin/make -f
+# -*- makefile -*-
 
-include /usr/share/cdbs/1/rules/buildcore.mk
-include /usr/share/cdbs/1/class/autotools.mk
-include /usr/share/cdbs/1/rules/debhelper.mk
-include /usr/share/cdbs/1/rules/simple-patchsys.mk
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
 
-so_version := 0
+export PATH:=$(PATH):$(CURDIR)/bin
 
-# Make sure libsqlite0 is built before packages depending on it
-binary/sqlite binary/libsqlite-dev binary/libsqlite-tcl:: binary/libsqlite$(so_version)
+CONFIGURE_EXTRA_FLAGS = config_TARGET_TCL_INC="-I/usr/include/tcl8.6" \
+	config_BUILD_CFLAGS="$(CFLAGS) -DTHREADSAFE=1" \
+	config_TARGET_LIBS="-ltcl8.6 -lpthread" \
+	--enable-utf8
 
-common-install-arch::
-	install -d debian/tmp/usr/lib/sqlite
-	install -m 0664 debian/pkgIndex.tcl debian/tmp/usr/lib/sqlite
-	./libtool --mode=install install libtclsqlite.la `pwd`/debian/tmp/usr/lib/sqlite
-	install -d debian/tmp/usr/share/lemon
-	install -m 664 tool/lempar.c debian/tmp/usr/share/lemon
-	install -m 775 lemon debian/tmp/usr/bin/
-	sed -i "/dependency_libs/ s/'.*'/''/" `find debian/tmp/ -name '*.la'`
+override_dh_clean:
+	dh_autotools-dev_restoreconfig
+	dh_clean
 
-DEB_AUTO_UPDATE_LIBTOOL = pre
-DEB_AUTO_UPDATE_AUTOCONF = 2.50
-DEB_AUTO_UPDATE_ACLOCAL = 1.11
-DEB_AUTO_UPDATE_AUTOMAKE = 1.11 # We don't use automake, but aclocal
+override_dh_auto_configure:
+	mkdir -p $(CURDIR)/bin/
+	ln -s $(shell which tclsh8.6) $(CURDIR)/bin/tclsh
+	dh_autotools-dev_updateconfig
+	dh_auto_configure -- $(CONFIGURE_EXTRA_FLAGS)
 
-DEB_CONFIGURE_EXTRA_FLAGS = config_TARGET_TCL_INC="-I/usr/include/tcl8.5" \
-			    config_BUILD_CFLAGS="$(CFLAGS) -DTHREADSAFE=1" \
-			    config_TARGET_LIBS="-lpthread" \
-			    --enable-utf8
+override_dh_auto_build:
+	$(MAKE) all libtclsqlite.la doc
 
-DEB_MAKE_BUILD_TARGET = all libtclsqlite.la doc
-# DEB_MAKE_CHECK_TARGET = test
+override_dh_auto_install:
+	install -d $(CURDIR)/debian/tmp/usr/bin/ \
+		$(CURDIR)/debian/tmp/usr/lib/sqlite/
+	install -m 0664 $(CURDIR)/debian/pkgIndex.tcl \
+		$(CURDIR)/debian/tmp/usr/lib/sqlite
+	./libtool --mode=install install libsqlite.la \
+		$(CURDIR)/debian/tmp/usr/lib
+	./libtool --mode=install install libtclsqlite.la \
+		$(CURDIR)/debian/tmp/usr/lib/sqlite
+	install -d $(CURDIR)/debian/tmp/usr/share/lemon
+	install -m 664 $(CURDIR)/tool/lempar.c \
+		$(CURDIR)/debian/tmp/usr/share/lemon
+	install -m 775 lemon $(CURDIR)/debian/tmp/usr/bin/
+	dh_auto_install
 
-DEB_DH_INSTALL_ARGS := --sourcedir=debian/tmp
+override_dh_makeshlibs:
+	# empty dependency_libs
+	sed -i "/dependency_libs/ s/'.*'/''/" \
+		`find $(CURDIR)/debian/ -name '*.la'`
+	dh_makeshlibs -V -X"libtclsqlite.so*"
 
-DEB_ALL_CHANGELOG = doc/changes.html
+override_dh_auto_test:
+	dh_auto_test || true
 
-DEB_DH_MAKESHLIBS_ARGS := -V -X"libtclsqlite.so*"
+%:
+	dh $@ --parallel
 
-DEB_SHLIBDEPS_LIBRARY_sqlite := libsqlite$(so_version)
-DEB_SHLIBDEPS_INCLUDE_sqlite := debian/libsqlite$(so_version)/usr/lib/
+.PHONY: override_dh_clean override_dh_auto_configure override_dh_auto_build \
+	override_dh_auto_install override_dh_makeshlibs \
+	override_dh_auto_test
