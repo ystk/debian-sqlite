@@ -12,6 +12,7 @@ CONFIGURE_EXTRA_FLAGS = config_TARGET_TCL_INC="-I/usr/include/tcl8.6" \
 	--enable-utf8
 
 override_dh_clean:
+	dh_autoreconf_clean
 	dh_autotools-dev_restoreconfig
 	dh_clean
 
@@ -19,6 +20,7 @@ override_dh_auto_configure:
 	mkdir -p $(CURDIR)/bin/
 	ln -s $(shell which tclsh8.6) $(CURDIR)/bin/tclsh
 	dh_autotools-dev_updateconfig
+	dh_autoreconf
 	dh_auto_configure -- $(CONFIGURE_EXTRA_FLAGS)
 
 override_dh_auto_build:

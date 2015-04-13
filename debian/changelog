@@ -1,3 +1,13 @@
+sqlite (2.8.17-12) unstable; urgency=low
+
+  * Sync with Ubuntu.
+
+  [ Adam Conrad <adconrad@ubuntu.com> ]
+  * Update config.{sub,guess} too, autoreconf isn't enough for this
+    (closes: #727510).
+
+ -- Laszlo Boszormenyi (GCS) <gcs@debian.org>  Thu, 28 Aug 2014 21:32:41 +0000
+
 sqlite (2.8.17-11) unstable; urgency=low
 
   * Move to Tcl 8.6 .
