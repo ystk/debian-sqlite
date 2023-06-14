@@ -2,3 +2,5 @@
 02-lemon-snprintf.patch
 03-add-fprintf-format-argument.patch
 04-fix-sort-syntax.patch
+07-CVE-2016-6153.patch
+08-CVE-2018-8740.patch

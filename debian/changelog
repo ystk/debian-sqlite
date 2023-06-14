@@ -1,3 +1,11 @@
+sqlite (2.8.17-12+deb8u1) jessie-security; urgency=medium
+
+  * Non-maintainer upload by the ELTS Security Team.
+  * Backport patch for CVE-2016-6153, insecure tmpfile generation.
+  * Backport patch for CVE-2018-8740, segfault on corrupted file.
+
+ -- Tobias Frost <tobi@debian.org>  Sat, 13 May 2023 12:52:37 +0200
+
 sqlite (2.8.17-12) unstable; urgency=low
 
   * Sync with Ubuntu.
